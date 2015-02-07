@@ -6,6 +6,7 @@
 #define MIN_FRONT_DIST 2
 #define MIN_SIDE_DIST 2
 #define ROBOT_WIDTH 12
+//
 
 float UltraSensors[] = new float[6];
 float InfraSensors[] = new float[6];
