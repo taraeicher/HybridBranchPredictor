@@ -1,4 +1,5 @@
 #include <math.h>
+#include <servo.h>
 #include "shared.h"
 #define MARGIN_OF_ERROR 1
 #define MAX_FRONT_DIST 10
@@ -127,51 +128,60 @@ void choose()
 	while(state != stopped)
 }
 
-//
+//Ping all sensors.
 
 void pingAll(float[] sensors1, float[] sensors2)
 {
-	
+	for(i=0; i < sensors1.length; i++)
+	{
+		pinMode(sensors[i].init, OUTPUT);
+  		pinMode(sensors[i].echo, INPUT);
+	}
+	for(i=0; i < sensors2.length; i++)
+	{
+		pinMode(sensors[i].init, OUTPUT);
+  		pinMode(sensors[i].echo, INPUT);
+	}
 }
 
 //Send sensor signal to turn right based on a certain gradient.
 
 void turnRight(float gradient)
 {
-	motor_front_r.write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
-	motor_back_r.write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
-	motor_front_l.write(DEFAULT_SPEED / WHEEL_RADIUS);
-	motor_back_l.write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_front_r].write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motors[motor_back_r].write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motors[motor_front_l].write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_back_l].write(DEFAULT_SPEED / WHEEL_RADIUS);
 }
 
 //Send sensor signal to turn right based on a certain gradient.
 
 void turnLeft(float gradient)
 {
-	motor_front_l.write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
-	motor_back_l.write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
-	motor_front_r.write(DEFAULT_SPEED / WHEEL_RADIUS);
-	motor_back_r.write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_front_l].write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motors[motor_back_l].write(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motors[motor_front_r].write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_back_r].write(DEFAULT_SPEED / WHEEL_RADIUS);
 }
 
 //Send sensor signal to stop.
 
 void stop()
 {
-	motor_front_l.write(0);
-	motor_back_l.write(0);
-	motor_front_r.write(0);
-	motor_back_r.write(0);
+	motors[motor_front_l].write(0);
+	motors[motor_back_l].write(0);
+	motors[motor_front_r].write(0);
+	motors[motor_back_r].write(0);
 }
 
 //Straighten out the robot.
 
 void goStraight()
 {
-	motor_front_r.write(DEFAULT_SPEED / WHEEL_RADIUS);
-	motor_back_r.write(DEFAULT_SPEED / WHEEL_RADIUS);
-	motor_front_l.write(DEFAULT_SPEED / WHEEL_RADIUS);
-	motor_back_l.write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_front_r].write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_back_r].write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_front_l].write(DEFAULT_SPEED / WHEEL_RADIUS);
+	motors[motor_back_l].write(DEFAULT_SPEED / WHEEL_RADIUS);
 }
 
 //Move to the right for a short distance, then straighten out.
