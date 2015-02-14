@@ -6,6 +6,8 @@
 #define MIN_FRONT_DIST 2
 #define MIN_SIDE_DIST 2
 #define ROBOT_WIDTH 12
+#define WHEEL_RADIUS 2
+#define DEFAULT_SPEED 20
 //
 
 float UltraSensors[] = new float[6];
@@ -136,11 +138,41 @@ void pingAll(float[] sensors1, float[] sensors2)
 
 void turnRight(float gradient)
 {
-	float angle = atanf(gradient/ROBOT_WIDTH);
+	motor_front_r.speed(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motor_back_r.speed(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motor_front_l.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+	motor_back_l.speed(DEFAULT_SPEED / WHEEL_RADIUS);
 }
 
-void turnLeft(float gradient);
-void stop();
-void goStraight();
+//Send sensor signal to turn right based on a certain gradient.
+
+void turnLeft(float gradient)
+{
+	motor_front_l.speed(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motor_back_l.speed(DEFAULT_SPEED + atanf(gradient/ROBOT_WIDTH) * ROBOT_WIDTH) / WHEEL_RADIUS);
+	motor_front_r.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+	motor_back_r.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+}
+
+//Send sensor signal to stop.
+
+void stop()
+{
+	motor_front_l.speed(0);
+	motor_back_l.speed(0);
+	motor_front_r.speed(0);
+	motor_back_r.speed(0);
+}
+
+//Straighten out the robot.
+
+void goStraight()
+{
+	motor_front_r.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+	motor_back_r.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+	motor_front_l.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+	motor_back_l.speed(DEFAULT_SPEED / WHEEL_RADIUS);
+}
+
 void scootRight();
 void scootLeft();
